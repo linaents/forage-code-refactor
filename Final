@@ -1,0 +1,90 @@
+import os
+import sys
+
+from typing import List, Optional
+
+
+class Car:
+    """A car."""
+
+    def __init__(self, name: str, parts: List[Part]) -> None:
+        self.name = name
+        self.parts = parts
+
+    def get_part(self, name: str) -> Optional[Part]:
+        """Get a part by name."""
+        for part in self.parts:
+            if part.name == name:
+                return part
+        return None
+
+    def add_part(self, part: Part) -> None:
+        """Add a part to the car."""
+        self.parts.append(part)
+
+    def remove_part(self, name: str) -> None:
+        """Remove a part from the car."""
+        for i, part in enumerate(self.parts):
+            if part.name == name:
+                del self.parts[i]
+                break
+
+
+class Part:
+    """A car part."""
+
+    def __init__(self, name: str, type: str, service_criteria: List[ServiceCriteria]) -> None:
+        self.name = name
+        self.type = type
+        self.service_criteria = service_criteria
+
+    def get_service_criteria(self) -> List[ServiceCriteria]:
+        """Get the service criteria for the part."""
+        return self.service_criteria
+
+    def add_service_criteria(self, criteria: ServiceCriteria) -> None:
+        """Add a service criteria to the part."""
+        self.service_criteria.append(criteria)
+
+    def remove_service_criteria(self, criteria: ServiceCriteria) -> None:
+        """Remove a service criteria from the part."""
+        self.service_criteria.remove(criteria)
+
+
+class ServiceCriteria:
+    """A service criteria."""
+
+    def __init__(self, name: str, description: str, interval: int, unit: str) -> None:
+        self.name = name
+        self.description = description
+        self.interval = interval
+        self.unit = unit
+
+
+def main() -> None:
+    """Main entry point."""
+
+    # Create a car.
+    car = Car("Thovex", [])
+
+    # Add parts to the car.
+    car.add_part(Part("Battery", "Electrical", [ServiceCriteria("Replace battery", "Replace the battery every 3 years", 3, "years")]))
+    car.add_part(Part("Engine", "Internal combustion", [ServiceCriteria("Change oil", "Change the oil every 3,000 miles", 3000, "miles")]))
+    car.add_part(Part("Tires", "Rubber", [ServiceCriteria("Rotate tires", "Rotate the tires every 6,000 miles", 6000, "miles")]))
+
+    # Get a part by name.
+    battery = car.get_part("Battery")
+
+    # Add a service criteria to a part.
+    battery.add_service_criteria(ServiceCriteria("Check battery level", "Check the battery level every month", 1, "months"))
+
+    # Remove a service criteria from a part.
+    battery.remove_service_criteria(ServiceCriteria("Replace battery", "Replace the battery every 3 years", 3, "years"))
+
+    # Print the car's parts.
+    for part in car.parts:
+        print(part)
+
+
+if __name__ == "__main__":
+    main()
